@@ -1,0 +1,64 @@
+{
+  "name": "portmaster",
+  "version": "1.0.0",
+  "description": "PortMaster - Professional Port Manager for macOS",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never",
+    "build-mac": "electron-builder --mac",
+    "build-all": "electron-builder --mac --win --linux"
+  },
+  "keywords": [
+    "macos",
+    "menu-bar",
+    "ports",
+    "process",
+    "developer-tool",
+    "port-manager"
+  ],
+  "author": "meyank-ssh",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.portmaster.app",
+    "productName": "PortMaster",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/logo.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "files": [
+      "main.js",
+      "assets/**/*"
+    ]
+  },
+  "dependencies": {
+    "canvas": "^3.2.0"
+  }
+}
