@@ -13,7 +13,26 @@ echo "Installing PortMaster..."
 # Get latest release
 REPO="meyank-ssh/portmaster"
 RELEASE=$(curl -s "https://api.github.com/repos/$REPO/releases/latest")
-DMG_URL=$(echo "$RELEASE" | grep -o '"browser_download_url": "[^"]*\.dmg"' | cut -d'"' -f4)
+
+# Check if release exists
+if echo "$RELEASE" | grep -q '"message": "Not Found"'; then
+    echo "No releases found. Please create a release first."
+    echo "Visit: https://github.com/$REPO/releases"
+    exit 1
+fi
+
+# Detect architecture and choose appropriate DMG
+ARCH=$(uname -m)
+if [[ "$ARCH" == "arm64" ]]; then
+    DMG_URL=$(echo "$RELEASE" | grep -o '"browser_download_url": "[^"]*arm64\.dmg"' | cut -d'"' -f4)
+else
+    DMG_URL=$(echo "$RELEASE" | grep -o '"browser_download_url": "[^"]*\.dmg"' | grep -v arm64 | cut -d'"' -f4)
+fi
+
+if [ -z "$DMG_URL" ]; then
+    echo "No DMG file found for your architecture ($ARCH)."
+    exit 1
+fi
 
 # Download and install
 TEMP_DIR="/tmp/portmaster-install"
